@@ -1,0 +1,132 @@
+/*
+ * Everything here is sized in container units of the stage, so the headline
+ * wraps the same way at every width and the glass always lands on the same
+ * letters. The glass is a 200×300 drawing: 1 drawing unit = --gw / 200.
+ */
+@property --level {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.56;
+}
+
+.hs-stage {
+  container-type: inline-size;
+  position: relative;
+  isolation: isolate;
+
+  /* Phones: three lines, glass over "about." */
+  --fs: 16.4cqw;
+  --gw: 32cqw;
+  --gx: 67cqw;
+  --gy: 12.1cqw;
+  /* Water surface, as a fraction of --gw (0.56 = full, 1.31 = empty) */
+  --level: 0.56;
+
+  /* Same rule as every section headline (see lib/type.ts): 0.3 × its size.
+     On phones the tagline sits beside the glass's base. */
+  margin-bottom: max(0.75rem, calc(var(--fs) * 0.3));
+  animation: hs-fill 1.6s cubic-bezier(0.22, 0.7, 0.2, 1) 0.35s both;
+}
+
+@media (min-width: 768px) {
+  .hs-stage {
+    /* Two lines, glass over the end of "about." */
+    --fs: 11.4cqw;
+    --gw: 27cqw;
+    --gx: 63cqw;
+    --gy: -4.1cqw;
+    padding-bottom: 0;
+    /* On short, wide screens shrink the whole stage so the form stays in view. */
+    width: min(100%, max(600px, calc((100svh - 440px) * 4.9)));
+  }
+}
+
+@keyframes hs-fill {
+  from {
+    --level: 1.31;
+  }
+  to {
+    --level: 0.56;
+  }
+}
+
+.hs-stage.is-sloshing {
+  animation: hs-slosh 0.9s ease-out both;
+}
+
+.hs-stage.is-sloshing .hs-water {
+  animation: hs-tilt 0.9s ease-out both;
+}
+
+@keyframes hs-slosh {
+  0% { --level: 0.56; }
+  20% { --level: 0.6; }
+  45% { --level: 0.53; }
+  70% { --level: 0.575; }
+  100% { --level: 0.56; }
+}
+
+@keyframes hs-tilt {
+  0% { rotate: 0deg; }
+  20% { rotate: -3deg; }
+  45% { rotate: 2.2deg; }
+  70% { rotate: -1deg; }
+  100% { rotate: 0deg; }
+}
+
+.hs-headline {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-wrap: nowrap;
+}
+
+/* Clipped to the water inside the glass (inner wall tapers 0.0865 → 0.1295). */
+.hs-lens {
+  position: absolute;
+  /* Extends below the headline box so the clip can reach the glass floor. */
+  inset: 0 0 -80cqw 0;
+  z-index: 1;
+  pointer-events: none;
+  --wall: calc(0.0865 + (var(--level) - 0.56) * 0.0573);
+  clip-path: polygon(
+    calc(var(--gx) + var(--gw) * var(--wall)) calc(var(--gy) + var(--gw) * var(--level)),
+    calc(var(--gx) + var(--gw) * (1 - var(--wall))) calc(var(--gy) + var(--gw) * var(--level)),
+    calc(var(--gx) + var(--gw) * 0.8705) calc(var(--gy) + var(--gw) * 1.31),
+    calc(var(--gx) + var(--gw) * 0.1295) calc(var(--gy) + var(--gw) * 1.31)
+  );
+}
+
+.hs-lens-inner {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--lavender-light), var(--lavender));
+  /* Anchored near the left wall so the letters swell rightwards into the water. */
+  transform-origin: calc(var(--gx) + var(--gw) * 0.2) calc(var(--gy) + var(--gw) * 0.9);
+  transform: scale(1.3, 1.08);
+}
+
+.hs-lens-inner .hs-headline {
+  color: #1d1725;
+}
+
+.hs-glass {
+  position: absolute;
+  z-index: 2;
+  left: var(--gx);
+  top: var(--gy);
+  width: var(--gw);
+  height: calc(var(--gw) * 1.5);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hs-water {
+  transform: translateY(calc((var(--level) - 0.56) * 200px));
+  transform-origin: 100px 112px;
+}

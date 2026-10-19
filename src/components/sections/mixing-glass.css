@@ -1,0 +1,105 @@
+/* Particles fall in (step 0), swirl and dissolve (step 1), water drops (step 2). */
+/* Fibre leaves the scoop's lip as one stream and spreads out in the water. */
+.mg-particle {
+  opacity: 0;
+  transform: translate(127px, -16px);
+}
+
+.mg-stage:not(.mg-step--1) .mg-particle {
+  animation: mg-fall 0.75s cubic-bezier(0.45, 0, 0.8, 0.5) var(--delay) forwards;
+}
+
+@keyframes mg-fall {
+  0% { opacity: 0; transform: translate(127px, -16px); }
+  10% { opacity: 1; }
+  100% { opacity: 1; transform: translate(var(--x), var(--y)); }
+}
+
+/* The scoop: swing in, tip, hold while it pours, tip back, lift away. */
+.mg-scoop {
+  opacity: 0;
+  transform-origin: 0 0;
+}
+
+.mg-step-0 .mg-scoop {
+  animation: mg-scoop 1.75s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes mg-scoop {
+  0% { opacity: 0; transform: translate(50px, -40px) rotate(10deg); }
+  18% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  34% { transform: translate(-4px, 4px) rotate(-50deg); }
+  66% { transform: translate(-4px, 4px) rotate(-54deg); }
+  80% { opacity: 1; transform: translate(0, 0) rotate(-8deg); }
+  100% { opacity: 0; transform: translate(50px, -40px) rotate(10deg); }
+}
+
+.mg-heap {
+  transform-origin: 0 -8px;
+}
+
+.mg-step-0 .mg-heap {
+  animation: mg-empty 1.75s ease both;
+}
+
+@keyframes mg-empty {
+  0%, 32% { scale: 1; opacity: 1; }
+  62%, 100% { scale: 0.2 0.1; opacity: 0; }
+}
+
+.mg-swirl {
+  transform-origin: 100px 200px;
+}
+
+.mg-dissolve {
+  transition: opacity 1.1s ease var(--d);
+}
+
+.mg-step-1 .mg-swirl,
+.mg-step-2 .mg-swirl,
+.mg-step-3 .mg-swirl {
+  animation: mg-stir 1.8s cubic-bezier(0.3, 0, 0.3, 1) forwards;
+}
+
+.mg-step-1 .mg-dissolve,
+.mg-step-2 .mg-dissolve,
+.mg-step-3 .mg-dissolve {
+  opacity: 0;
+}
+
+@keyframes mg-stir {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(540deg) scale(0.45); }
+}
+
+.mg-water {
+  transition: transform 1s cubic-bezier(0.3, 0.7, 0.3, 1);
+}
+
+.mg-step-2 .mg-water,
+.mg-step-3 .mg-water {
+  transform: translateY(46px);
+}
+
+/* The glass counter pops each time it goes up. */
+.mg-count {
+  animation: mg-pop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+
+@keyframes mg-pop {
+  0% { scale: 0.4; rotate: -20deg; }
+  100% { scale: 1; rotate: 0deg; }
+}
+
+
+/* Clear water until it's stirred, then a faint white tint. */
+.mg-mixed {
+  opacity: 0;
+  transition: opacity 1.4s ease 0.2s;
+}
+
+.mg-step-1 .mg-mixed,
+.mg-step-2 .mg-mixed,
+.mg-step-3 .mg-mixed {
+  opacity: 1;
+}

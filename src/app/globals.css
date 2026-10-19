@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
+/* Brand tokens — every colour on the site resolves to one of these. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --lavender: #d9c8f0;
+  --lavender-light: #e6daf6;
+  --lavender-deep: #b9a2dc;
+  --orange: #ff792d;
+  --ink: #17131d;
+  --off-white: #faf8f5;
+  --white: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-lavender: var(--lavender);
+  --color-lavender-light: var(--lavender-light);
+  --color-lavender-deep: var(--lavender-deep);
+  --color-orange: var(--orange);
+  --color-ink: var(--ink);
+  --color-off-white: var(--off-white);
+  --font-display: var(--font-muller), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--off-white);
+  color: var(--ink);
+  font-family: var(--font-sans);
 }
+
+::selection {
+  background: var(--orange);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The logo's sparkle turns when you hover the logo. */
+.logo-sparkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: rotate 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.group:hover .logo-sparkle {
+  rotate: 90deg;
+}
+
+@keyframes ola-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+.ola-spin {
+  animation: ola-spin 60s linear infinite;
+}
+
+/* Signup success: a sparkle pops in. */
+@keyframes ola-pop {
+  0% { scale: 0; rotate: -90deg; }
+  60% { scale: 1.25; }
+  100% { scale: 1; rotate: 0deg; }
+}
+.ola-pop {
+  animation: ola-pop 0.6s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+

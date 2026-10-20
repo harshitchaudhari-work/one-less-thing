@@ -24,7 +24,7 @@ Until the two environment variables below are set, the form honestly replies "si
 | Signed up (IST) | time of signup |
 | Email | the email, trimmed and lower-cased |
 | Source | `hero` or `closing` (which form) |
-| Marketing consent | `Yes` only if they ticked "also send me the occasional tip and offer", otherwise `No` |
+| Marketing consent | always `No` for now: the forms don't ask for it. The column stays so an opt-in can be added back later without changing the script. |
 
 ### The Apps Script
 

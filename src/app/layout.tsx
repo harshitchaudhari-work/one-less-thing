@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 // Muller Next trial files — swap for the licensed files (same weights) before launch.
@@ -21,24 +22,34 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-// Your own domain once set; otherwise Vercel's production address (set automatically on Vercel).
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
+// Absolute base for share images and canonical links. On Vercel (production and
+// previews) this is the public address, so shared links always show the real site.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL ? site.url : "http://localhost:3000");
+
+const shareTitle = "one less thing to worry about.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "One Less Thing | Daily gut care, made simple",
+  title: "One Less Thing | daily gut care, made simple",
   description:
-    "One Less Thing is a daily fibre supplement that mixes into water. Launching soon, starting with India. Sign up for early access.",
+    "One Less Thing is a daily fibre supplement that mixes into water: gut care that fits into your routine. Launching soon, starting with India. Join the waitlist for early access.",
+  applicationName: site.name,
+  keywords: ["gut health", "fibre supplement", "daily fibre", "digestion", "gut care", "India", "One Less Thing"],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "One Less Thing",
-    description: "One less thing to worry about. Daily gut care, made simple.",
     type: "website",
+    url: "/",
+    siteName: site.name,
     locale: "en_IN",
+    title: shareTitle,
+    description: `${site.tagline} ${site.description}`,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: shareTitle,
+    description: `${site.tagline} ${site.description}`,
+  },
+  formatDetection: { telephone: false, email: false, address: false },
 };
 
 export const viewport: Viewport = {

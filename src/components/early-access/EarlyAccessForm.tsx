@@ -15,8 +15,6 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export function EarlyAccessForm({ source }: { source: "hero" | "closing" }) {
   const id = useId();
   const [email, setEmail] = useState("");
-  // Marketing is opt-in: unticked unless they choose it.
-  const [marketingConsent, setMarketingConsent] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -34,7 +32,7 @@ export function EarlyAccessForm({ source }: { source: "hero" | "closing" }) {
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: value, source, marketingConsent, company }),
+        body: JSON.stringify({ email: value, source, company }),
       });
       const data: { message?: string } = await res.json().catch(() => ({}));
 
@@ -102,18 +100,6 @@ export function EarlyAccessForm({ source }: { source: "hero" | "closing" }) {
           {loading ? "adding you…" : "get early access"}
         </button>
       </div>
-
-      <label className="mt-4 flex cursor-pointer items-start gap-3 text-sm leading-5 text-ink/80">
-        <input
-          type="checkbox"
-          name="marketingConsent"
-          checked={marketingConsent}
-          onChange={(e) => setMarketingConsent(e.target.checked)}
-          disabled={loading}
-          className="mt-0.5 size-4 shrink-0 cursor-pointer accent-[var(--orange)]"
-        />
-        <span>also send me the occasional tip and offer. unsubscribe anytime.</span>
-      </label>
 
       <div className="mt-3 min-h-10 text-sm leading-5">
         {hasError ? (

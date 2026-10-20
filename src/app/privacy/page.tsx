@@ -5,6 +5,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy policy | One Less Thing",
+  description: "How One Less Thing handles your email address.",
   robots: { index: false },
 };
 
@@ -19,9 +20,9 @@ export default function PrivacyPage() {
         <h1 className="font-display text-4xl font-extrabold tracking-tight text-ink md:text-5xl">privacy policy</h1>
         <p>
           This is a placeholder while we finalise our policy. In short: if you sign up for early access, we store your
-          email address (in a Google Sheet only our team can access) to tell you when One Less Thing launches. If you
-          also tick the box for tips and offers, we may send you those too. We don&apos;t sell your email or share it
-          for anyone else&apos;s marketing, and you can unsubscribe from any email.
+          email address (in a Google Sheet only our team can access) to tell you when One Less Thing launches. We
+          don&apos;t sell your email or share it for anyone else&apos;s marketing, and you can unsubscribe from any
+          email.
         </p>
         <p>
           Questions or want your email removed? Write to{" "}

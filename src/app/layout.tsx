@@ -59,6 +59,16 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${muller.variable} ${dmSans.variable} antialiased`}>
+      <head>
+        {/* Always open on the hero: stop the browser restoring the old scroll position
+            on refresh (runs before paint, so there's no jump). Links to a section,
+            like /#early-access, still land on that section. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `history.scrollRestoration="manual";if(!location.hash||location.hash==="#top")scrollTo(0,0);`,
+          }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

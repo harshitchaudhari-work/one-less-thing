@@ -46,8 +46,16 @@ export function MixingGlass() {
   const made = finished ? run + 1 : run;
 
   return (
-    <div ref={ref} className="grid items-center gap-10 sm:grid-cols-2 md:gap-16">
-      <div className={`mg-stage relative mx-auto w-52 sm:w-64 md:w-80 mg-step-${step}`} key={run}>
+    // Phones: glass and steps side by side with the button right below, so the
+    // whole demo fits on one screen. Wider screens: steps left, glass right.
+    <div
+      ref={ref}
+      className="grid grid-cols-[8.5rem_minmax(0,1fr)] items-center gap-x-5 gap-y-6 pt-12 sm:grid-cols-2 sm:gap-x-16 sm:pt-0"
+    >
+      <div
+        className={`mg-stage relative col-start-1 row-start-1 mx-auto w-full sm:col-start-2 sm:row-span-2 sm:w-64 md:w-80 mg-step-${step}`}
+        key={run}
+      >
         <Glass id="mix-glass" waterClassName="mg-water" mixedClassName="mg-mixed" className="h-auto w-full overflow-visible">
           <g className="mg-swirl">
             {PARTICLES.map((p, i) => (
@@ -75,30 +83,34 @@ export function MixingGlass() {
         </Glass>
       </div>
 
-      <div className="flex flex-col gap-6 sm:order-first">
-        <ol className="flex flex-col gap-3" aria-label="how it'll work">
+      <ol
+        className="col-start-2 row-start-1 flex flex-col gap-2 sm:col-start-1 sm:gap-3 sm:self-end"
+        aria-label="how it'll work"
+      >
           {STEPS.map((label, i) => {
             const active = step === i;
             const past = step > i;
             return (
               <li
                 key={label}
-                className={`flex items-center gap-3 font-display text-3xl font-extrabold tracking-tight transition-colors duration-300 md:text-5xl ${
+                className={`flex items-center gap-2 font-display text-xl font-extrabold tracking-tight transition-colors duration-300 sm:gap-3 sm:text-3xl md:text-5xl ${
                   active ? "text-ink" : past ? "text-ink/55" : "text-ink/25"
                 }`}
               >
-                <span className="w-6 text-base font-normal tabular-nums">{i + 1}</span>
+                <span className="w-4 shrink-0 text-sm font-normal tabular-nums sm:w-6 sm:text-base">{i + 1}</span>
                 {label}
                 <Sparkle
-                  className={`size-5 text-orange transition-[opacity,rotate] duration-500 ${active ? "rotate-90 opacity-100" : "opacity-0"}`}
+                  className={`size-4 shrink-0 text-orange sm:size-5 transition-[opacity,rotate] duration-500 ${active ? "rotate-90 opacity-100" : "opacity-0"}`}
                 />
               </li>
             );
           })}
-        </ol>
+      </ol>
+
+      <div className="col-span-2 row-start-2 flex flex-col gap-4 sm:col-span-1 sm:col-start-1 sm:gap-6 sm:self-start">
         <p
           aria-hidden={!finished}
-          className={`font-display text-3xl font-extrabold tracking-tight transition-[opacity,translate] duration-500 md:text-5xl ${
+          className={`font-display text-2xl font-extrabold tracking-tight transition-[opacity,translate] duration-500 sm:text-3xl md:text-5xl ${
             finished ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
           }`}
         >

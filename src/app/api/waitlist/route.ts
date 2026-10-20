@@ -49,3 +49,8 @@ export async function POST(request: Request) {
     return Response.json({ message: "we couldn't add you just now. try again in a minute." }, { status: 502 });
   }
 }
+
+// Only POST is supported; answer anything else straight away.
+export function GET() {
+  return Response.json({ message: "use POST" }, { status: 405, headers: { Allow: "POST" } });
+}
